@@ -14,7 +14,9 @@ const PodcastPreviewGrid = ({ podcasts }: Props): JSX.Element => {
         <Loader />
       </div>
       <div className="podcast-preview-grid">
-        {podcasts?.length ? (
+        {(Boolean(podcasts) && !podcasts?.length ? (
+            <div className="no_results">No results</div>
+        ) : (podcasts?.length ? (
           podcasts.map((podcast, i) => (
             <PodcastPreview key={podcast.id} podcast={podcast} index={i} />
           ))
@@ -22,7 +24,7 @@ const PodcastPreviewGrid = ({ podcasts }: Props): JSX.Element => {
           <div className="loading">
             <Loader />
           </div>
-        )}
+        )))}
       </div>
       <style jsx>{`
         .podcast-grid {
@@ -35,6 +37,9 @@ const PodcastPreviewGrid = ({ podcasts }: Props): JSX.Element => {
           opacity: ${podcasts?.length ? 1 : 0};
           transition: 400ms opacity ease-in-out;
           background: hsl(240, 26%, 12%);
+        }
+        .no_results {
+            text-align: center;
         }
         .loading {
           position: absolute;
