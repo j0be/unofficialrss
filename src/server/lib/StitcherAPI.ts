@@ -42,7 +42,10 @@ export const getSearchPremiumShows = async (
     const page = await get(`/search/shows?query=${query}`);
     const shows =
       page?.data?.shows
-        .filter((show: StitcherShow) => show.restricted.includes('Premium'))
+        .sort((showA: StitcherShow, showB: StitcherShow) => {
+          return showA.restricted.includes('Premium') && !showB.restricted.includes('Premium') ? -1 :
+            (!showA.restricted.includes('Premium') && showB.restricted.includes('Premium') ? 1 : 0);
+        })
         .filter((show: StitcherShow) => !!show.id)
         .map(stitcherShowToPodcast) || [];
     return shows;
